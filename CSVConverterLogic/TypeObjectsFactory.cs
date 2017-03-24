@@ -1,20 +1,48 @@
-using System.Text.RegularExpressions;
+using System.Collections.Generic;
 
 namespace CSVConverterLogic
 {
-    public static class TypeObjectsFactory
+    public class TypeObjectsFactory
     {
-        public static object GetTypeObjectsCollection(CsvParsedObject csvParsedObject)
+        private readonly List<Types> typesList;
+
+        public TypeObjectsFactory()
+        {
+            this.typesList = new List<Types>();
+        }
+
+        private void InitFactory()
+        {
+            typesList.Add(new TypeInt());
+            typesList.Add(new TypeDate());
+        }
+
+        public object GetTypeObjectsCollection(CsvParsedObject csvParsedObject)
         {
             var headers = csvParsedObject.GetHeaders();
             var firstDataRow = csvParsedObject.GetRowAt(1);
-            string integerPattern = @"/\d+/";
-            string datePattern = @"/#\d{2}/";//not finished
-            foreach (var column in firstDataRow)
+            var typesTuple = new Dictionary<string, string>();
+            for(int i = 0; i < firstDataRow.Length; ++i)
             {
-   
+                typesTuple.Add(headers[i], this.GetType(firstDataRow[i]));
             }
-            return null;
+
+            return typesTuple;
+        }
+
+        private string GetType(string column)
+        {
+            foreach (var types in this.typesList)
+            {
+                var success = types.Match(column);
+
+                if (success)
+                {
+                    return types.name;
+                }
+            }
+
+            return "String";
         }
     }
 }

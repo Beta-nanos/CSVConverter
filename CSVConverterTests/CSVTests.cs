@@ -39,8 +39,9 @@ namespace CSVConverterTests
             CSVConverter csvConverter = new CSVConverter(fileParser,
                 It.IsAny<TextWriter>(), It.IsAny<ICsvConverter>());
             var csvParsedObject = csvConverter.ParseFile();
+            var typeObjectsFactory = new TypeObjectsFactory();
             var typeObjectsCollection = 
-                TypeObjectsFactory.GetTypeObjectsCollection(csvParsedObject);
+                typeObjectsFactory.GetTypeObjectsCollection(csvParsedObject);
 
             Assert.IsNotNull(typeObjectsCollection);
         }
