@@ -30,5 +30,10 @@ namespace CSVConverterLogic
         {
             return this.dataRows.Count;
         }
+
+        public string[] GetHeaders()
+        {
+            return this.GetRowAt(0);
+        }
     }
 }

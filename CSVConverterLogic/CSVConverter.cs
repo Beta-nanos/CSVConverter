@@ -18,7 +18,7 @@ namespace CSVConverterLogic
         }
 
         /// <exception cref="UnparseableCsvException">CSV contains an invalid format.</exception>
-        public CsvParsedObject parseFile() 
+        public CsvParsedObject ParseFile() 
         {
             CsvParsedObject csvParsedObject = this.fileParser.Parse();
             

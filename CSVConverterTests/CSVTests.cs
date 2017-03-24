@@ -16,7 +16,7 @@ namespace CSVConverterTests
             var fileParser = new FileParser(fileReader);
             CSVConverter csvConverter = new CSVConverter(fileParser, 
                 It.IsAny<TextWriter>(), It.IsAny<ICsvConverter>());
-            var csvParsedObject = csvConverter.parseFile();
+            var csvParsedObject = csvConverter.ParseFile();
             Assert.IsNotNull(csvParsedObject);
         }
 
@@ -28,7 +28,21 @@ namespace CSVConverterTests
             var fileParser = new FileParser(fileReader);
             CSVConverter csvConverter = new CSVConverter(fileParser,
                 It.IsAny<TextWriter>(), It.IsAny<ICsvConverter>());
-            csvConverter.parseFile();
+            csvConverter.ParseFile();
+        }
+
+        [TestMethod]
+        public void ValidCSVParsedObjectDataTypes()
+        {
+            var fileReader = new StreamReader("Personas.csv");
+            var fileParser = new FileParser(fileReader);
+            CSVConverter csvConverter = new CSVConverter(fileParser,
+                It.IsAny<TextWriter>(), It.IsAny<ICsvConverter>());
+            var csvParsedObject = csvConverter.ParseFile();
+            var typeObjectsCollection = 
+                TypeObjectsFactory.GetTypeObjectsCollection(csvParsedObject);
+
+            Assert.IsNotNull(typeObjectsCollection);
         }
     }
 }
