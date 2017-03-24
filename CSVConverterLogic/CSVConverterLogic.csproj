@@ -47,6 +47,10 @@
     <Compile Include="ICsvConverter.cs" />
     <Compile Include="IFileParser.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="TypeDate.cs" />
+    <Compile Include="TypeInt.cs" />
+    <Compile Include="TypeObjectsFactory.cs" />
+    <Compile Include="Types.cs" />
     <Compile Include="UnparseableCsvException.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

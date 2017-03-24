@@ -40,10 +40,13 @@ namespace CSVConverterTests
                 It.IsAny<TextWriter>(), It.IsAny<ICsvConverter>());
             var csvParsedObject = csvConverter.ParseFile();
             var typeObjectsFactory = new TypeObjectsFactory();
+
             var typeObjectsCollection = 
                 typeObjectsFactory.GetTypeObjectsCollection(csvParsedObject);
+            Assert.AreEqual(typeObjectsCollection["Nombre"],"String");
+            Assert.AreEqual(typeObjectsCollection["Edad"], "int");
+            Assert.AreEqual(typeObjectsCollection["FechaNacimiento"], "date");
 
-            Assert.IsNotNull(typeObjectsCollection);
         }
     }
 }

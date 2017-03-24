@@ -9,6 +9,7 @@ namespace CSVConverterLogic
         public TypeObjectsFactory()
         {
             this.typesList = new List<Types>();
+            InitFactory();
         }
 
         private void InitFactory()
@@ -17,7 +18,7 @@ namespace CSVConverterLogic
             typesList.Add(new TypeDate());
         }
 
-        public object GetTypeObjectsCollection(CsvParsedObject csvParsedObject)
+        public Dictionary<string, string> GetTypeObjectsCollection(CsvParsedObject csvParsedObject)
         {
             var headers = csvParsedObject.GetHeaders();
             var firstDataRow = csvParsedObject.GetRowAt(1);
