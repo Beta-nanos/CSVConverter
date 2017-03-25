@@ -12,7 +12,7 @@ namespace CSVConverterTests
         [TestMethod]
         public void ValidateCSVStructureTest()
         {
-            var fileReader = new StreamReader("Personas.csv");
+            var fileReader = new StreamReader("Personas - Copy.csv");
             var fileParser = new FileParser(fileReader);
             CSVConverter csvConverter = new CSVConverter(fileParser,
                 It.IsAny<TextWriter>(), It.IsAny<ICsvConverter>());
