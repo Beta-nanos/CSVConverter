@@ -41,7 +41,7 @@ namespace CSVConverter
                 BuildFileFromCsv();
             }
         }
-
+        
         public static void BuildFileFromCsv()
         {
             using (var scope = Container.BeginLifetimeScope())
