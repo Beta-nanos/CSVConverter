@@ -14,8 +14,9 @@ namespace CSVConverterLogic
 
         private void InitFactory()
         {
-            typesList.Add(new TypeInt());
+            typesList.Add(new TypeUnparsedDate());
             typesList.Add(new TypeDate());
+            typesList.Add(new TypeInt());
         }
 
         public Dictionary<string, string> GetTypeObjectsCollection(CsvParsedObject csvParsedObject)

@@ -7,7 +7,7 @@ namespace CSVConverterLogic
     {
         public TypeInt()
         {
-            string integerPattern = @"^\d+";
+            string integerPattern = @"^\d+$";
             regex = new Regex(integerPattern);
             name = "int";    
         }

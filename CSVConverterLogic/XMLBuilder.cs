@@ -39,11 +39,6 @@ namespace CSVConverterLogic
 
         private void AddObject(string header, string data)
         {
-            if (typesObject[header].Equals("date"))
-            {
-                data = data.Replace('#', ' ');
-                data = data.Trim();
-            }
             sb.Append("\t\t<" + header+">");
             sb.Append(data);
             sb.Append("</" + header + ">\n");

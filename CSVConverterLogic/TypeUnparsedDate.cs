@@ -2,13 +2,13 @@
 
 namespace CSVConverterLogic
 {
-    public class TypeDate : Types
+    public class TypeUnparsedDate : Types
     {
-        public TypeDate()
+        public TypeUnparsedDate()
         {
-            string datePattern = @"^(\d{4})-(\d{2})-(\d{2}) (\d{2}):(\d{2}):(\d{2})$";
+            string datePattern = @"#\d{2}/\d{2}/\d{4}#";
             regex = new Regex(datePattern);
-            name = "date";
+            name = "UnparsedDate";
         }
         public override bool Match(string column)
         {

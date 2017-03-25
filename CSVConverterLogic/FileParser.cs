@@ -55,8 +55,22 @@ namespace CSVConverterLogic
             for(int i = 0; i < result.Length; ++i)
             {
                 result[i] = result[i].Replace("\"", String.Empty);
+                result[i] = FormatResultIfDate(result[i]);
             }
             csvParsedObject.AddDataRow(result);
+        }
+
+        private string FormatResultIfDate(string result)
+        {
+            var dateMatcher = new TypeUnparsedDate();
+            if (dateMatcher.Match(result))
+            {
+                result = result.Replace("#", String.Empty);
+                DateTime date = Convert.ToDateTime(result);
+                var strDate = date.ToString("yyyy-MM-dd HH':'mm':'ss");
+                return strDate;
+            }
+            return result;
         }
     }
 }
