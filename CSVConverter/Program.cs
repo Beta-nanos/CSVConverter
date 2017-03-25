@@ -22,13 +22,18 @@ namespace CSVConverter
                 var outputPath = args[2];
 
                 var builder = new ContainerBuilder();
-                //builder.RegisterType<ConsoleOutput>().As<IOutput>();
-                //builder.RegisterType<TodayWriter>().As<IDateWriter>();
+                
+                var fileReader = new StreamReader(csvPath);
+                var fileParser = new FileParser(fileReader);
+                var fileWriter = new StreamWriter(outputPath);
 
-                builder.RegisterType<FileParser>().As<IFileParser>();
-                builder.RegisterType<StreamWriter>().As<TextWriter>();
+                builder.RegisterInstance(fileReader).As<TextReader>();
+                builder.RegisterInstance(fileParser).As<IFileParser>();
+                builder.RegisterInstance(fileWriter).As<TextWriter>();
                 builder.RegisterType<XMLBuilder>().As<ICsvConverter>();
-
+                builder.
+                    RegisterType<CSVConverterLogic.CSVConverter>().
+                    As<CSVConverterLogic.CSVConverter>();
                 Container = builder.Build();
 
                 BuildFileFromCSV();
