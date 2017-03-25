@@ -3,69 +3,60 @@ using System.Text;
 
 namespace CSVConverterLogic
 {
-    public class JSONBuilder : ICsvConverter
+    public class JsonBuilder : ICsvConverter
     {
-        private Dictionary<string, string> typesObject;
-        private StringBuilder sb;
-        private string[] headers;
+        private Dictionary<string, string> _typesObject;
+        private readonly StringBuilder _stringbuilder;
+        private string[] _headers;
 
-        public JSONBuilder()
+        public JsonBuilder()
         {
-            sb = new StringBuilder();
+            _stringbuilder = new StringBuilder();
 
         }
         public string GetData()
         {
-            return sb.ToString();
+            return _stringbuilder.ToString();
         }
 
         public void BuildFromCSV(CsvParsedObject csvParsedObject)
         {
-            headers = csvParsedObject.GetHeaders();
-            sb.Append("[\n");
+            _headers = csvParsedObject.GetHeaders();
+            _stringbuilder.Append("[\n");
             int count = csvParsedObject.GetRowsCount();
             for (int i = 1; i < count; ++i)
             {
                 string[] row = csvParsedObject.GetRowAt(i);
                 BuildFromRow(row);
-                sb.Append(",\n");
+                _stringbuilder.Append(",\n");
             }
-            sb.Length--;
-            sb.Length--;
-            sb.Append("\n]");
+            _stringbuilder.Length = _stringbuilder.Length - 2;
+            _stringbuilder.Append("\n]");
         }
 
         private void BuildFromRow(string[] row)
         {
-            sb.Append("\t{\n");
-            for (int i = 0; i < headers.Length; i++)
+            _stringbuilder.Append("\t{\n");
+            for (int i = 0; i < _headers.Length; i++)
             {
-                AddObject(headers[i], row[i]);
-                sb.Append(",\n");
+                AddObject(_headers[i], row[i]);
+                _stringbuilder.Append(",\n");
             }
-            sb.Length--;
-            sb.Length--;
-            sb.Append("\n\t}");
+            _stringbuilder.Length = _stringbuilder.Length - 2;
+            _stringbuilder.Append("\n\t}");
         }
 
         private void AddObject(string header, string data)
         {
-            if (typesObject[header].Equals("date"))
-            {
-                data = data.Replace('#', '\"');
-                data = data.Trim();
-            }
-            else if (typesObject[header].Equals("String"))
-            {
+            if (!_typesObject[header].Equals("int"))
                 data = "\"" + data + "\"";
-            }
-            sb.Append("\t\t\"" + header + "\": ");
-            sb.Append(data);
+            _stringbuilder.Append("\t\t\"" + header + "\": ");
+            _stringbuilder.Append(data);
         }
 
         public void SetTypes(Dictionary<string, string> typesObject)
         {
-            this.typesObject = typesObject;
+            _typesObject = typesObject;
         }
     }
 }

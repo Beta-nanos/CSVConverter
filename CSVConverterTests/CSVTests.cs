@@ -95,7 +95,7 @@ namespace CSVConverterTests
             var csvParsedObject = new CsvParsedObject();
             csvParsedObject.AddDataRow(new string[] { "nombre", "edad" });
             csvParsedObject.AddDataRow(new string[] { "Chungo", "22" });
-            var jsonBuilder = new JSONBuilder();
+            var jsonBuilder = new JsonBuilder();
 
             var typeObjectsFactory = new TypeObjectsFactory();
 
@@ -120,7 +120,7 @@ namespace CSVConverterTests
             var fileReader = new StreamReader("Personas.csv");
             var fileParser = new FileParser(fileReader);
             var fileWriter = new StreamWriter("personas.json");
-            var jsonBuilder = new JSONBuilder();
+            var jsonBuilder = new JsonBuilder();
             CSVConverter csvConverter = new CSVConverter(fileParser,
                 fileWriter, jsonBuilder);
             var csvParsedObject = csvConverter.ParseFile();
