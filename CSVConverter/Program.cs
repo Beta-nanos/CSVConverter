@@ -2,10 +2,12 @@
 using CSVConverterLogic;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using IContainer = Autofac.IContainer;
 
 namespace CSVConverter
 {
@@ -36,11 +38,11 @@ namespace CSVConverter
                     As<CSVConverterLogic.CSVConverter>();
                 Container = builder.Build();
 
-                BuildFileFromCSV();
+                BuildFileFromCsv();
             }
         }
 
-        public static void BuildFileFromCSV()
+        public static void BuildFileFromCsv()
         {
             using (var scope = Container.BeginLifetimeScope())
             {

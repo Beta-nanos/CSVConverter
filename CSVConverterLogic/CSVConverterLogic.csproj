@@ -46,6 +46,7 @@
     <Compile Include="FileParser.cs" />
     <Compile Include="ICsvConverter.cs" />
     <Compile Include="IFileParser.cs" />
+    <Compile Include="JSONBuilder.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="TypeDate.cs" />
     <Compile Include="TypeInt.cs" />
