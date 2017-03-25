@@ -1,12 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
+﻿using System.Collections.Generic;
 using System.Text;
-using System.Threading.Tasks;
 
 namespace CSVConverterLogic
 {
-    class JSONBuilder : ICsvConverter
+    public class JSONBuilder : ICsvConverter
     {
         private Dictionary<string, string> typesObject;
         private StringBuilder sb;
@@ -31,8 +28,9 @@ namespace CSVConverterLogic
             {
                 string[] row = csvParsedObject.GetRowAt(i);
                 BuildFromRow(row);
-                sb.Append(",");
+                sb.Append(",\n");
             }
+            sb.Length--;
             sb.Length--;
             sb.Append("\n]");
         }
@@ -43,8 +41,9 @@ namespace CSVConverterLogic
             for (int i = 0; i < headers.Length; i++)
             {
                 AddObject(headers[i], row[i]);
-                sb.Append(",");
+                sb.Append(",\n");
             }
+            sb.Length--;
             sb.Length--;
             sb.Append("\n\t}");
         }
@@ -53,10 +52,14 @@ namespace CSVConverterLogic
         {
             if (typesObject[header].Equals("date"))
             {
-                data = data.Replace('#', ' ');
+                data = data.Replace('#', '\"');
                 data = data.Trim();
             }
-            sb.Append("\t\t" + header + ": ");
+            else if (typesObject[header].Equals("String"))
+            {
+                data = "\"" + data + "\"";
+            }
+            sb.Append("\t\t\"" + header + "\": ");
             sb.Append(data);
         }
 
