@@ -1,5 +1,6 @@
 ﻿using System;
 using System.IO;
+using System.Linq;
 
 namespace CSVConverterLogic
 {
@@ -47,8 +48,12 @@ namespace CSVConverterLogic
 
         private void AddDataRow(string lineRead, CsvParsedObject csvParsedObject)
         {
-            var rowData = lineRead.Split(',');
-            csvParsedObject.AddDataRow(rowData);
+            var result = lineRead.Split('"')
+                     .Select((element, index) => index % 2 == 0  // If even index
+                                           ? element.Split(new[] { ',' }, StringSplitOptions.RemoveEmptyEntries)  // Split the item
+                                           : new string[] { element })  // Keep the entire item
+                     .SelectMany(element => element).ToArray();
+            csvParsedObject.AddDataRow(result);
         }
     }
 }
