@@ -1,4 +1,5 @@
 using System.IO;
+using System.Runtime.InteropServices;
 using CSVConverterLogic;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
