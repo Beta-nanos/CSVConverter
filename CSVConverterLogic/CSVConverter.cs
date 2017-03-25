@@ -1,43 +1,42 @@
-﻿using System.CodeDom;
-using System.IO;
+﻿using System.IO;
 
 namespace CSVConverterLogic
 {
-    public class CSVConverter
+    public class CsvConverter
     {
-        private IFileParser fileParser;
-        private TextWriter fileWriter;
-        private ICsvConverter converter;
-        private TypeObjectsFactory typeFactory;
-        public CSVConverter(IFileParser fileParser, TextWriter fileWriter, 
+        private readonly IFileParser _fileParser;
+        private readonly TextWriter _fileWriter;
+        private readonly ICsvConverter _converter;
+        private readonly TypeObjectsFactory _typeFactory;
+        public CsvConverter(IFileParser fileParser, TextWriter fileWriter, 
             ICsvConverter converter)
         {
-            this.fileParser = fileParser;
-            this.fileWriter = fileWriter;
-            this.converter = converter;
-            this.typeFactory = new TypeObjectsFactory();
+            _fileParser = fileParser;
+            _fileWriter = fileWriter;
+            _converter = converter;
+            _typeFactory = new TypeObjectsFactory();
         }
 
         /// <exception cref="UnparseableCsvException">CSV contains an invalid format.</exception>
         public CsvParsedObject ParseFile() 
         {
-            CsvParsedObject csvParsedObject = this.fileParser.Parse();
+            CsvParsedObject csvParsedObject = _fileParser.Parse();
             
             return csvParsedObject;
         }
 
         public string MakeObject(CsvParsedObject csvParsedObject)
         {
-            var typeObjectsCollection = typeFactory.GetTypeObjectsCollection(csvParsedObject);
-            converter.SetTypes(typeObjectsCollection);
-            converter.BuildFromCSV(csvParsedObject);
-            return converter.GetData();
+            var typeObjectsCollection = _typeFactory.GetTypeObjectsCollection(csvParsedObject);
+            _converter.SetTypes(typeObjectsCollection);
+            _converter.BuildFromCsv(csvParsedObject);
+            return _converter.GetData();
         }
 
-        public void WriteConvertedCSV(string textObject)
+        public void WriteConvertedCsv(string textObject)
         {   
-            fileWriter.WriteLine(textObject);
-            fileWriter.Close();
+            _fileWriter.WriteLine(textObject);
+            _fileWriter.Close();
         }
 
     }

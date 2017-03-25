@@ -1,25 +1,23 @@
 ﻿using System;
 using System.IO;
-using System.Linq;
-using System.Runtime.CompilerServices;
 using System.Text.RegularExpressions;
 
 namespace CSVConverterLogic
 {
     public class FileParser : IFileParser
     {
-        private TextReader fileReader;
+        private readonly TextReader _fileReader;
 
         public FileParser(TextReader fileReader)
         {
-            this.fileReader = fileReader;
+            _fileReader = fileReader;
         }
 
         public CsvParsedObject Parse()
         {
             var csvParsedObject = new CsvParsedObject();
-            string lineRead = "";
-            while (!String.IsNullOrEmpty(lineRead = this.fileReader.ReadLine()))
+            string lineRead;
+            while (!String.IsNullOrEmpty(lineRead = _fileReader.ReadLine()))
             {
                 AddDataRow(lineRead, csvParsedObject);
             }
@@ -55,8 +53,22 @@ namespace CSVConverterLogic
             for(int i = 0; i < result.Length; ++i)
             {
                 result[i] = result[i].Replace("\"", String.Empty);
+                result[i] = FormatResultIfDate(result[i]);
             }
             csvParsedObject.AddDataRow(result);
+        }
+
+        private string FormatResultIfDate(string result)
+        {
+            var dateMatcher = new TypeUnparsedDate();
+            if (dateMatcher.Match(result))
+            {
+                result = result.Replace("#", String.Empty);
+                DateTime date = Convert.ToDateTime(result);
+                var strDate = date.ToString("yyyy-MM-dd HH':'mm':'ss");
+                return strDate;
+            }
+            return result;
         }
     }
 }

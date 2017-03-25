@@ -1,12 +1,6 @@
 ﻿using Autofac;
 using CSVConverterLogic;
-using System;
-using System.Collections.Generic;
-using System.ComponentModel;
 using System.IO;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using IContainer = Autofac.IContainer;
 
 namespace CSVConverter
@@ -34,28 +28,28 @@ namespace CSVConverter
                 builder.RegisterInstance(fileWriter).As<TextWriter>();
                 if (conversionType.Equals("XML"))
                 {
-                    builder.RegisterType<XMLBuilder>().As<ICsvConverter>();
+                    builder.RegisterType<XmlBuilder>().As<ICsvConverter>();
                 }else if (conversionType.Equals("JSON"))
                 {
                     builder.RegisterType<JsonBuilder>().As<ICsvConverter>();
                 }
                 builder.
-                    RegisterType<CSVConverterLogic.CSVConverter>().
-                    As<CSVConverterLogic.CSVConverter>();
+                    RegisterType<CSVConverterLogic.CsvConverter>().
+                    As<CSVConverterLogic.CsvConverter>();
                 Container = builder.Build();
 
                 BuildFileFromCsv();
             }
         }
-        
+
         public static void BuildFileFromCsv()
         {
             using (var scope = Container.BeginLifetimeScope())
             {
-                var converter = scope.Resolve<CSVConverterLogic.CSVConverter>();
+                var converter = scope.Resolve<CSVConverterLogic.CsvConverter>();
 
                 var csvParsedObject = converter.ParseFile();
-                converter.WriteConvertedCSV(converter.MakeObject(csvParsedObject));
+                converter.WriteConvertedCsv(converter.MakeObject(csvParsedObject));
 
             }
         }

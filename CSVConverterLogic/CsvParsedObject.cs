@@ -4,36 +4,36 @@ namespace CSVConverterLogic
 {
     public sealed class CsvParsedObject
     {
-        private List<string[]> dataRows;
+        private readonly List<string[]> _dataRows;
 
         public CsvParsedObject()
         {
-            dataRows = new List<string[]>();
+            _dataRows = new List<string[]>();
         }
 
         public void AddDataRow(string[] rowData)
         {
-            dataRows.Add(rowData);
+            _dataRows.Add(rowData);
         }
 
         public int GetHeadersCount()
         {
-            return this.GetRowAt(0).Length;
+            return GetRowAt(0).Length;
         }
 
         public string[] GetRowAt(int i)
         {
-            return this.dataRows[i];
+            return _dataRows[i];
         }
 
         public int GetRowsCount()
         {
-            return this.dataRows.Count;
+            return _dataRows.Count;
         }
 
         public string[] GetHeaders()
         {
-            return this.GetRowAt(0);
+            return GetRowAt(0);
         }
     }
 }

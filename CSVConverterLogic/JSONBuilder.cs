@@ -19,7 +19,7 @@ namespace CSVConverterLogic
             return _stringbuilder.ToString();
         }
 
-        public void BuildFromCSV(CsvParsedObject csvParsedObject)
+        public void BuildFromCsv(CsvParsedObject csvParsedObject)
         {
             _headers = csvParsedObject.GetHeaders();
             _stringbuilder.Append("[\n");
@@ -48,11 +48,6 @@ namespace CSVConverterLogic
 
         private void AddObject(string header, string data)
         {
-            if (_typesObject[header].Equals("date"))
-            {
-                data = data.Replace('#', ' ');
-                data = data.Trim();
-            }
             if (!_typesObject[header].Equals("int"))
                 data = "\"" + data + "\"";
             _stringbuilder.Append("\t\t\"" + header + "\": ");

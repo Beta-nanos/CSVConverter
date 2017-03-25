@@ -1,62 +1,56 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Text;
 
 namespace CSVConverterLogic
 {
-    public class XMLBuilder : ICsvConverter
+    public class XmlBuilder : ICsvConverter
     {
-        private Dictionary<string, string> typesObject;
-        private StringBuilder sb;
-        private string[] headers;
-        public XMLBuilder()
+        private Dictionary<string, string> _typesObject;
+        private readonly StringBuilder _sb;
+        private string[] _headers;
+        public XmlBuilder()
         {
-            sb = new StringBuilder();
+            _sb = new StringBuilder();
 
         }
 
-        public void BuildFromCSV(CsvParsedObject csvParsedObject)
+        public void BuildFromCsv(CsvParsedObject csvParsedObject)
         {
-            headers = csvParsedObject.GetHeaders();
-            sb.Append("<Rows>\n");
+            _headers = csvParsedObject.GetHeaders();
+            _sb.Append("<Rows>\n");
             int count = csvParsedObject.GetRowsCount();
             for (int i= 1; i< count; ++i){
                 string[] row = csvParsedObject.GetRowAt(i);
                 BuildFromRow(row);
             }
-            sb.Append("</Rows>");
+            _sb.Append("</Rows>");
         }
 
         private void BuildFromRow(string[] row)
         {
-            sb.Append("\t<Row>\n");
-            for(int i=0; i < headers.Length; i++)
+            _sb.Append("\t<Row>\n");
+            for(int i=0; i < _headers.Length; i++)
             {
-                AddObject(headers[i], row[i]);
+                AddObject(_headers[i], row[i]);
             }
-            sb.Append("\t</Row>\n");
+            _sb.Append("\t</Row>\n");
         }
 
         private void AddObject(string header, string data)
         {
-            if (typesObject[header].Equals("date"))
-            {
-                data = data.Replace('#', ' ');
-                data = data.Trim();
-            }
-            sb.Append("\t\t<" + header+">");
-            sb.Append(data);
-            sb.Append("</" + header + ">\n");
+            _sb.Append("\t\t<" + header+">");
+            _sb.Append(data);
+            _sb.Append("</" + header + ">\n");
         }
 
         public string GetData()
         {
-            return sb.ToString();
+            return _sb.ToString();
         }
 
         public void SetTypes(Dictionary<string, string> typesObject)
         {
-            this.typesObject = typesObject;
+            _typesObject = typesObject;
         }
     }
 }

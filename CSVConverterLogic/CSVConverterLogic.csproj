@@ -52,6 +52,7 @@
     <Compile Include="TypeInt.cs" />
     <Compile Include="TypeObjectsFactory.cs" />
     <Compile Include="Types.cs" />
+    <Compile Include="TypeUnparsedDate.cs" />
     <Compile Include="UnparseableCsvException.cs" />
     <Compile Include="XMLBuilder.cs" />
   </ItemGroup>
