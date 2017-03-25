@@ -50,7 +50,7 @@ namespace CSVConverterLogic
         {
             var result = lineRead.Split('"')
                      .Select((element, index) => index % 2 == 0  // If even index
-                                           ? element.Split(new[] { ',' }, StringSplitOptions.RemoveEmptyEntries)  // Split the item
+                                           ? element.Split(new[] { ',' })  // Split the item
                                            : new string[] { element })  // Keep the entire item
                      .SelectMany(element => element).ToArray();
             csvParsedObject.AddDataRow(result);

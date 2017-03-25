@@ -1,4 +1,5 @@
 using System.IO;
+using System.Runtime.InteropServices;
 using CSVConverterLogic;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
@@ -12,7 +13,7 @@ namespace CSVConverterTests
         [TestMethod]
         public void ValidateCSVStructureTest()
         {
-            var fileReader = new StreamReader("Personas - Copy.csv");
+            var fileReader = new StreamReader(GetTestFilePath("Personas.csv"));
             var fileParser = new FileParser(fileReader);
             CSVConverter csvConverter = new CSVConverter(fileParser,
                 It.IsAny<TextWriter>(), It.IsAny<ICsvConverter>());
@@ -24,7 +25,7 @@ namespace CSVConverterTests
         [ExpectedException(typeof(UnparseableCsvException))]
         public void InvalidCSVFormatTest()
         {
-            var fileReader = new StreamReader("Per.csv");
+            var fileReader = new StreamReader(GetTestFilePath("Per.csv"));
             var fileParser = new FileParser(fileReader);
             CSVConverter csvConverter = new CSVConverter(fileParser,
                 It.IsAny<TextWriter>(), It.IsAny<ICsvConverter>());
@@ -34,7 +35,7 @@ namespace CSVConverterTests
         [TestMethod]
         public void ValidCSVParsedObjectDataTypes()
         {
-            var fileReader = new StreamReader("Personas.csv");
+            var fileReader = new StreamReader(GetTestFilePath("Personas.csv"));
             var fileParser = new FileParser(fileReader);
             CSVConverter csvConverter = new CSVConverter(fileParser,
                 It.IsAny<TextWriter>(), It.IsAny<ICsvConverter>());
@@ -77,16 +78,69 @@ namespace CSVConverterTests
         [TestMethod]
         public void CSVToXMLTest()
         {
-            var fileReader = new StreamReader("Personas.csv");
+            var fileReader = new StreamReader(GetTestFilePath("Personas.csv"));
             var fileParser = new FileParser(fileReader);
-            var fileWriter = new StreamWriter("personas.xml");
+            var fileWriter = new StreamWriter(GetTestFilePath("personas.xml"));
             var xmlBuilder = new XMLBuilder();
             CSVConverter csvConverter = new CSVConverter(fileParser,
                 fileWriter, xmlBuilder);
             var csvParsedObject = csvConverter.ParseFile();
             csvConverter.WriteConvertedCSV(csvConverter.MakeObject(csvParsedObject));
 
-            Assert.IsTrue(File.Exists("personas.xml"));
+            Assert.IsTrue(File.Exists(GetTestFilePath("personas.xml")));
+        }
+
+        [TestMethod]
+        public void AddObjectToJSONTest()
+        {
+            var csvParsedObject = new CsvParsedObject();
+            csvParsedObject.AddDataRow(new string[] { "nombre", "edad" });
+            csvParsedObject.AddDataRow(new string[] { "Chungo", "22" });
+            var jsonBuilder = new JsonBuilder();
+
+            var typeObjectsFactory = new TypeObjectsFactory();
+
+            var typeObjectsCollection =
+                typeObjectsFactory.GetTypeObjectsCollection(csvParsedObject);
+            jsonBuilder.SetTypes(typeObjectsCollection);
+            jsonBuilder.BuildFromCSV(csvParsedObject);
+            string jsonData =
+                "[\n" +
+                    "\t{\n" +
+                        "\t\t\"nombre\": \"Chungo\",\n" +
+                        "\t\t\"edad\": 22\n" +
+                    "\t}\n" +
+                "]";
+
+            Assert.AreEqual(jsonData, jsonBuilder.GetData());
+        }
+
+        [TestMethod]
+        public void CSVToJSONTest()
+        {
+            var fileReader = new StreamReader(GetTestFilePath("Personas.csv"));
+            var fileParser = new FileParser(fileReader);
+            var fileWriter = new StreamWriter(GetTestFilePath("personas.json"));
+            var jsonBuilder = new JsonBuilder();
+            CSVConverter csvConverter = new CSVConverter(fileParser,
+                fileWriter, jsonBuilder);
+            var csvParsedObject = csvConverter.ParseFile();
+            csvConverter.WriteConvertedCSV(csvConverter.MakeObject(csvParsedObject));
+
+            Assert.IsTrue(File.Exists(GetTestFilePath("personas.json")));
+        }
+
+        private static string GetTestFilePath(string fileName)
+        {
+            string solutionPath = Path.GetDirectoryName(Path.GetDirectoryName(Directory.GetCurrentDirectory()));
+            if (solutionPath != null)
+            {
+                DirectoryInfo parentDir = Directory.GetParent(solutionPath);
+                string testFolderPath = Path.Combine(parentDir.FullName, "CSVTests");
+                string filePath = Path.Combine(testFolderPath, fileName);
+                return filePath;
+            }
+            return null;
         }
     }
 }
