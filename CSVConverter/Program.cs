@@ -32,7 +32,13 @@ namespace CSVConverter
                 builder.RegisterInstance(fileReader).As<TextReader>();
                 builder.RegisterInstance(fileParser).As<IFileParser>();
                 builder.RegisterInstance(fileWriter).As<TextWriter>();
-                builder.RegisterType<XMLBuilder>().As<ICsvConverter>();
+                if (conversionType.Equals("XML"))
+                {
+                    builder.RegisterType<XMLBuilder>().As<ICsvConverter>();
+                }else if (conversionType.Equals("JSON"))
+                {
+                    builder.RegisterType<JsonBuilder>().As<ICsvConverter>();
+                }
                 builder.
                     RegisterType<CSVConverterLogic.CSVConverter>().
                     As<CSVConverterLogic.CSVConverter>();

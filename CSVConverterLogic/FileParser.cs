@@ -1,6 +1,8 @@
 ﻿using System;
 using System.IO;
 using System.Linq;
+using System.Runtime.CompilerServices;
+using System.Text.RegularExpressions;
 
 namespace CSVConverterLogic
 {
@@ -48,11 +50,12 @@ namespace CSVConverterLogic
 
         private void AddDataRow(string lineRead, CsvParsedObject csvParsedObject)
         {
-            var result = lineRead.Split('"')
-                     .Select((element, index) => index % 2 == 0  // If even index
-                                           ? element.Split(new[] { ',' })  // Split the item
-                                           : new string[] { element })  // Keep the entire item
-                     .SelectMany(element => element).ToArray();
+            string pattern = @",(?=(?:[^""]*""[^""]*"")*(?![^""]*""))";
+            var result = Regex.Split(lineRead, pattern);
+            for(int i = 0; i < result.Length; ++i)
+            {
+                result[i] = result[i].Replace("\"", String.Empty);
+            }
             csvParsedObject.AddDataRow(result);
         }
     }

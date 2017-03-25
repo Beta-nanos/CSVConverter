@@ -67,7 +67,7 @@
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\CSVConverterLogic\CSVConverterLogic.csproj">
-      <Project>{058FA3A1-C2A8-40FE-955B-C64B1D7D352F}</Project>
+      <Project>{058fa3a1-c2a8-40fe-955b-c64b1d7d352f}</Project>
       <Name>CSVConverterLogic</Name>
     </ProjectReference>
   </ItemGroup>
