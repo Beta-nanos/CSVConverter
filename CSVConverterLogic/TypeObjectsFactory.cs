@@ -4,19 +4,19 @@ namespace CSVConverterLogic
 {
     public class TypeObjectsFactory
     {
-        private readonly List<Types> typesList;
+        private readonly List<Types> _typesList;
 
         public TypeObjectsFactory()
         {
-            this.typesList = new List<Types>();
+            _typesList = new List<Types>();
             InitFactory();
         }
 
         private void InitFactory()
         {
-            typesList.Add(new TypeUnparsedDate());
-            typesList.Add(new TypeDate());
-            typesList.Add(new TypeInt());
+            _typesList.Add(new TypeUnparsedDate());
+            _typesList.Add(new TypeDate());
+            _typesList.Add(new TypeInt());
         }
 
         public Dictionary<string, string> GetTypeObjectsCollection(CsvParsedObject csvParsedObject)
@@ -26,7 +26,7 @@ namespace CSVConverterLogic
             var typesTuple = new Dictionary<string, string>();
             for(int i = 0; i < firstDataRow.Length; ++i)
             {
-                typesTuple.Add(headers[i], this.GetType(firstDataRow[i]));
+                typesTuple.Add(headers[i], GetType(firstDataRow[i]));
             }
 
             return typesTuple;
@@ -34,13 +34,13 @@ namespace CSVConverterLogic
 
         private string GetType(string column)
         {
-            foreach (var types in this.typesList)
+            foreach (var types in _typesList)
             {
                 var success = types.Match(column);
 
                 if (success)
                 {
-                    return types.name;
+                    return types.Name;
                 }
             }
 

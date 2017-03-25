@@ -1,5 +1,4 @@
-﻿using System;
-using System.Text.RegularExpressions;
+﻿using System.Text.RegularExpressions;
 
 namespace CSVConverterLogic
 {
@@ -8,12 +7,12 @@ namespace CSVConverterLogic
         public TypeInt()
         {
             string integerPattern = @"^\d+$";
-            regex = new Regex(integerPattern);
-            name = "int";    
+            Regex = new Regex(integerPattern);
+            Name = "int";    
         }
         public override bool Match(string column)
         {
-            return regex.Match(column).Success;
+            return Regex.Match(column).Success;
         }
     }
 }

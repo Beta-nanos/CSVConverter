@@ -1,25 +1,23 @@
 ﻿using System;
 using System.IO;
-using System.Linq;
-using System.Runtime.CompilerServices;
 using System.Text.RegularExpressions;
 
 namespace CSVConverterLogic
 {
     public class FileParser : IFileParser
     {
-        private TextReader fileReader;
+        private readonly TextReader _fileReader;
 
         public FileParser(TextReader fileReader)
         {
-            this.fileReader = fileReader;
+            _fileReader = fileReader;
         }
 
         public CsvParsedObject Parse()
         {
             var csvParsedObject = new CsvParsedObject();
-            string lineRead = "";
-            while (!String.IsNullOrEmpty(lineRead = this.fileReader.ReadLine()))
+            string lineRead;
+            while (!String.IsNullOrEmpty(lineRead = _fileReader.ReadLine()))
             {
                 AddDataRow(lineRead, csvParsedObject);
             }

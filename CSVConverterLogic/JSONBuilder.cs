@@ -19,7 +19,7 @@ namespace CSVConverterLogic
             return _stringbuilder.ToString();
         }
 
-        public void BuildFromCSV(CsvParsedObject csvParsedObject)
+        public void BuildFromCsv(CsvParsedObject csvParsedObject)
         {
             _headers = csvParsedObject.GetHeaders();
             _stringbuilder.Append("[\n");

@@ -1,5 +1,4 @@
 using System.IO;
-using System.Runtime.InteropServices;
 using CSVConverterLogic;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
@@ -7,15 +6,15 @@ using Moq;
 namespace CSVConverterTests
 {
     [TestClass]
-    public class CSVTests
+    public class CsvTests
     {
 
         [TestMethod]
-        public void ValidateCSVStructureTest()
+        public void ValidateCsvStructureTest()
         {
             var fileReader = new StreamReader(GetTestFilePath("Personas.csv"));
             var fileParser = new FileParser(fileReader);
-            CSVConverter csvConverter = new CSVConverter(fileParser,
+            CsvConverter csvConverter = new CsvConverter(fileParser,
                 It.IsAny<TextWriter>(), It.IsAny<ICsvConverter>());
             var csvParsedObject = csvConverter.ParseFile();
             Assert.IsNotNull(csvParsedObject);
@@ -23,21 +22,21 @@ namespace CSVConverterTests
 
         [TestMethod]
         [ExpectedException(typeof(UnparseableCsvException))]
-        public void InvalidCSVFormatTest()
+        public void InvalidCsvFormatTest()
         {
             var fileReader = new StreamReader(GetTestFilePath("Per.csv"));
             var fileParser = new FileParser(fileReader);
-            CSVConverter csvConverter = new CSVConverter(fileParser,
+            CsvConverter csvConverter = new CsvConverter(fileParser,
                 It.IsAny<TextWriter>(), It.IsAny<ICsvConverter>());
             csvConverter.ParseFile();
         }
 
         [TestMethod]
-        public void ValidCSVParsedObjectDataTypes()
+        public void ValidCsvParsedObjectDataTypes()
         {
             var fileReader = new StreamReader(GetTestFilePath("Personas.csv"));
             var fileParser = new FileParser(fileReader);
-            CSVConverter csvConverter = new CSVConverter(fileParser,
+            CsvConverter csvConverter = new CsvConverter(fileParser,
                 It.IsAny<TextWriter>(), It.IsAny<ICsvConverter>());
             var csvParsedObject = csvConverter.ParseFile();
             var typeObjectsFactory = new TypeObjectsFactory();
@@ -51,19 +50,19 @@ namespace CSVConverterTests
         }
 
         [TestMethod]
-        public void AddObjectToXMLTest()
+        public void AddObjectToXmlTest()
         {
             var csvParsedObject = new CsvParsedObject();
-            csvParsedObject.AddDataRow(new string[] { "nombre","edad"});
-            csvParsedObject.AddDataRow(new string[] { "luis", "21" });
-            var xmlBuilder = new XMLBuilder();
+            csvParsedObject.AddDataRow(new[] { "nombre","edad"});
+            csvParsedObject.AddDataRow(new[] { "luis", "21" });
+            var xmlBuilder = new XmlBuilder();
 
             var typeObjectsFactory = new TypeObjectsFactory();
 
             var typeObjectsCollection =
                 typeObjectsFactory.GetTypeObjectsCollection(csvParsedObject);
             xmlBuilder.SetTypes(typeObjectsCollection);
-            xmlBuilder.BuildFromCSV(csvParsedObject);
+            xmlBuilder.BuildFromCsv(csvParsedObject);
             string xmlData =
                 "<Rows>\n" +
                     "\t<Row>\n" +
@@ -76,26 +75,26 @@ namespace CSVConverterTests
         }
 
         [TestMethod]
-        public void CSVToXMLTest()
+        public void CsvtoXmlTest()
         {
             var fileReader = new StreamReader(GetTestFilePath("Personas.csv"));
             var fileParser = new FileParser(fileReader);
             var fileWriter = new StreamWriter(GetTestFilePath("personas.xml"));
-            var xmlBuilder = new XMLBuilder();
-            CSVConverter csvConverter = new CSVConverter(fileParser,
+            var xmlBuilder = new XmlBuilder();
+            CsvConverter csvConverter = new CsvConverter(fileParser,
                 fileWriter, xmlBuilder);
             var csvParsedObject = csvConverter.ParseFile();
-            csvConverter.WriteConvertedCSV(csvConverter.MakeObject(csvParsedObject));
+            csvConverter.WriteConvertedCsv(csvConverter.MakeObject(csvParsedObject));
 
             Assert.IsTrue(File.Exists(GetTestFilePath("personas.xml")));
         }
 
         [TestMethod]
-        public void AddObjectToJSONTest()
+        public void AddObjectToJsonTest()
         {
             var csvParsedObject = new CsvParsedObject();
-            csvParsedObject.AddDataRow(new string[] { "nombre", "edad" });
-            csvParsedObject.AddDataRow(new string[] { "Chungo", "22" });
+            csvParsedObject.AddDataRow(new[] { "nombre", "edad" });
+            csvParsedObject.AddDataRow(new[] { "Chungo", "22" });
             var jsonBuilder = new JsonBuilder();
 
             var typeObjectsFactory = new TypeObjectsFactory();
@@ -103,7 +102,7 @@ namespace CSVConverterTests
             var typeObjectsCollection =
                 typeObjectsFactory.GetTypeObjectsCollection(csvParsedObject);
             jsonBuilder.SetTypes(typeObjectsCollection);
-            jsonBuilder.BuildFromCSV(csvParsedObject);
+            jsonBuilder.BuildFromCsv(csvParsedObject);
             string jsonData =
                 "[\n" +
                     "\t{\n" +
@@ -116,16 +115,16 @@ namespace CSVConverterTests
         }
 
         [TestMethod]
-        public void CSVToJSONTest()
+        public void CsvtoJsonTest()
         {
             var fileReader = new StreamReader(GetTestFilePath("Personas.csv"));
             var fileParser = new FileParser(fileReader);
             var fileWriter = new StreamWriter(GetTestFilePath("personas.json"));
             var jsonBuilder = new JsonBuilder();
-            CSVConverter csvConverter = new CSVConverter(fileParser,
+            CsvConverter csvConverter = new CsvConverter(fileParser,
                 fileWriter, jsonBuilder);
             var csvParsedObject = csvConverter.ParseFile();
-            csvConverter.WriteConvertedCSV(csvConverter.MakeObject(csvParsedObject));
+            csvConverter.WriteConvertedCsv(csvConverter.MakeObject(csvParsedObject));
 
             Assert.IsTrue(File.Exists(GetTestFilePath("personas.json")));
         }
